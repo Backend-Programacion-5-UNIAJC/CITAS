@@ -1,5 +1,5 @@
-import {Course, courses } from "../data/courses";
-
+import { courses } from "../data/courses";
+import type { Course } from "../data/courses";
 
 let nextId = Math.max(0, ...courses.map((course) => course.id)) + 1;
 
