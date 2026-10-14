@@ -11,8 +11,8 @@ const courseRoutes = Router();
 
 courseRoutes.get("/", getAllCourses);
 courseRoutes.get("/:id", getCourseById);
-Router.post("/", createCourse);
-Router.put("/id", updateCourse);
-courseRoutes.delete("/id", deleteCourse);
+courseRoutes.post("/", createCourse);
+courseRoutes.put("/:id", updateCourse);
+courseRoutes.delete("/:id", deleteCourse);
 
 export default courseRoutes;

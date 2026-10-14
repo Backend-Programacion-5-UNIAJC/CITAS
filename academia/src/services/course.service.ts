@@ -1,32 +1,50 @@
-import courseRoutes from "../routes/course.routes";
-import {Course, corses} 
-let next = 5; // contiua despues del 4 id.
+import { courses } from "../data/courses";
+import type { Course } from "../data/courses";
+
+let nextId = Math.max(0, ...courses.map((course) => course.id)) + 1;
 
 export function listCourses(): Course[] {
-    return courseRoutes;
+  return courses;
 }
 
-export function findCourseById(id: number): Course | udefined {
-    return courseRoutes.find( c => c.id === id);
+export function findCourseById(id: number): Course | undefined {
+  return courses.find((course) => course.id === id);
 }
 
-export function createCourse(data: Omit<Course, 'id'>):Course{
-    const newCoruse: Course = [id; nextId , data];
-    courseRoutes.push(newCourse);
-return newCoruse;
-    
+export function createCourse(data: Omit<Course, "id">): Course {
+  const newCourse: Course = {
+    id: nextId++,
+    title: data.title,
+    capacity: data.capacity
+  };
+
+  courses.push(newCourse);
+  return newCourse;
 }
 
-export function updateCourse(id: number, data: Partial<Course>): Course | undefined{
-    const course = findCourseById(id);
-    if (!course) return undefined;
-    object.assing(course, data);
-    return course;
+export function updateCourse(
+  id: number,
+  data: Omit<Course, "id">
+): Course | undefined {
+  const course = findCourseById(id);
+
+  if (!course) {
+    return undefined;
+  }
+
+  course.title = data.title;
+  course.capacity = data.capacity;
+
+  return course;
 }
 
-export funtion deleteCourse(id: number): boolean {
-    const index = courseRoutes.findIndex(c => c.id === id);
-    if (index === -1) return false;
-    courseRoutes.splice(index, 1);
-    return true;
+export function deleteCourse(id: number): boolean {
+  const index = courses.findIndex((course) => course.id === id);
+
+  if (index === -1) {
+    return false;
+  }
+
+  courses.splice(index, 1);
+  return true;
 }
