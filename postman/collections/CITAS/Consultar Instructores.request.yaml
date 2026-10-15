@@ -1,0 +1,5 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/instructors
+method: GET
+order: 4276306664829616

@@ -1,0 +1,5 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/pacientes/4
+method: DELETE
+order: 4044462598691784

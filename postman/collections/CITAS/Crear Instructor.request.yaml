@@ -1,0 +1,14 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/instructors
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Pedro Ruiz\",\r
+
+    \  \"email\": \"pedro@example.com\"\r
+
+    }"
+order: 3715250145428166
