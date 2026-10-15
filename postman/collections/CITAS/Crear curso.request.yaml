@@ -1,0 +1,14 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/courses
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"title\": \"Bases de datos II\",\r
+
+    \  \"capacity\": 20\r
+
+    }\r\n"
+order: 746188822029250

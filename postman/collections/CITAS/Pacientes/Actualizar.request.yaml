@@ -1,0 +1,12 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/pacientes/3
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \  \"phone\": \"31111111111\"\r
+
+    }"
+order: 2761209525259590

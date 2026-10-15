@@ -1,0 +1,6 @@
+$kind: http-request
+name: Consultar/ID
+description: ""
+url: http://localhost:3000/pacientes/4
+method: GET
+order: 1553766506400556

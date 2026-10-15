@@ -1,0 +1,16 @@
+$kind: http-request
+description: ""
+url: http://localhost:3000/pacientes
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Karen Caicedo\",\r
+
+    \  \"email\": \"kcaicedo@gmail.com\",\r
+
+    \  \"phone\": \"3004567890\"\r
+
+    }"
+order: 3941144350273136
