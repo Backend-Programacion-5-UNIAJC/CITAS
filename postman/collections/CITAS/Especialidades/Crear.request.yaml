@@ -1,0 +1,8 @@
+$kind: http-request
+url: http://localhost:3000/especialidades
+method: POST
+order: 3000
+body:
+  type: json
+  content: |-
+    {"name":"Dermatologia","description":"Atencion de enfermedades de la piel"}

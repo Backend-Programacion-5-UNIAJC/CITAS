@@ -1,0 +1,8 @@
+$kind: http-request
+url: http://localhost:3000/doctores
+method: POST
+order: 3000
+body:
+  type: json
+  content: |-
+    {"name":"Pedro Ruiz","email":"pedro@example.com","especialidadId":1}

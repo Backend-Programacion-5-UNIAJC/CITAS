@@ -1,0 +1,8 @@
+$kind: http-request
+url: http://localhost:3000/doctores/1
+method: PUT
+order: 4000
+body:
+  type: json
+  content: |-
+    {"name":"Carlos Perez Actualizado"}
