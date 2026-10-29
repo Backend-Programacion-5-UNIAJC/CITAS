@@ -16,14 +16,14 @@ model Course {
 model Paciente {
   id    Int    @id @default(autoincrement())
   name  String
-  email String
+  email String @unique
   phone String
 }
 
 model Doctor {
   id             Int    @id @default(autoincrement())
   name           String
-  email          String
+  email String @unique
   especialidadId Int
 }
 
