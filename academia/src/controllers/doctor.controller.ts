@@ -1,12 +1,12 @@
 import type { Request, Response } from "express";
 import * as doctorService from "../services/doctor.service";
 
-export function getAllDoctores(req: Request, res: Response) {
-  res.status(200).json(doctorService.listDoctores());
+export async function getAllDoctores(req: Request, res: Response) {
+  res.status(200).json(await doctorService.listDoctores());
 }
 
-export function getDoctorById(req: Request, res: Response) {
-  const doctor = doctorService.findDoctorById(Number(req.params.id));
+export async function getDoctorById(req: Request, res: Response) {
+  const doctor = await doctorService.findDoctorById(Number(req.params.id));
 
   if (!doctor) {
     return res.status(404).json({ error: "Doctor no encontrado" });
@@ -15,11 +15,11 @@ export function getDoctorById(req: Request, res: Response) {
   res.status(200).json(doctor);
 }
 
-export function createDoctor(req: Request, res: Response) {
+export async function createDoctor(req: Request, res: Response) {
   const { name, email, especialidadId } = req.body ?? {};
 
 
-  const doctor = doctorService.createDoctor({
+  const doctor = await doctorService.createDoctor({
     name,
     email,
     especialidadId
@@ -28,10 +28,10 @@ export function createDoctor(req: Request, res: Response) {
   res.status(201).json(doctor);
 }
 
-export function updateDoctor(req: Request, res: Response) {
+export async function updateDoctor(req: Request, res: Response) {
   const { name, email, especialidadId } = req.body ?? {};
 
-  const doctor = doctorService.updateDoctor(Number(req.params.id), {
+  const doctor = await doctorService.updateDoctor(Number(req.params.id), {
     name,
     email,
     especialidadId
@@ -44,8 +44,8 @@ export function updateDoctor(req: Request, res: Response) {
   res.status(200).json(doctor);
 }
 
-export function deleteDoctor(req: Request, res: Response) {
-  const deleted = doctorService.deleteDoctor(Number(req.params.id));
+export async function deleteDoctor(req: Request, res: Response) {
+  const deleted = await doctorService.deleteDoctor(Number(req.params.id));
 
   if (!deleted) {
     return res.status(404).json({ error: "Doctor no encontrado" });
