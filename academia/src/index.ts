@@ -1,9 +1,11 @@
+import 'dotenv/config';
 import express from "express";
 import courseRoutes from "./routes/course.routes";
 import instructorRoutes from "./routes/instructor.routes";
 import pacienteRoutes from "./routes/paciente.routes";
 import doctorRoutes from "./routes/doctor.routes";
 import especialidadRoutes from "./routes/especialidad.routes";
+import authRoustes from '/raoutes/auth.raoutes';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
