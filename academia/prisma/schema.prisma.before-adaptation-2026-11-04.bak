@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+enum EstadoCita {
+  CONFIRMED
+  CANCELLED
+}
+
+enum EstadoCita {
+  CONFIRMED
+  CANCELLED
+}
+
+
+
+model user{
+  id       Int  @id @default(autoincrement())
+  name     String
+  email    String
+  password String
+  role     Role    @default()
+  instructor Instructor?
+}
+
+
+
+
+model Instructor {
+  id      Int      @id @default(autoincrement())
+  name    String
+  email   String   @unique
+  user User? @relation(fields: [userId], references: [id])
+  courses Course[]
+}
+
+
+model Course {
+  id       Int    @id @default(autoincrement())
+  title    String
+  capacity Int
+}
+
+model Paciente {
+  id    Int    @id @default(autoincrement())
+  name  String
+  email String @unique
+  phone String
+  citas Cita[]
+}
+
+model Doctor {
+  id             Int    @id @default(autoincrement())
+  name           String
+  email          String @unique
+  especialidadId Int
+  citas          Cita[]
+}
+
+model Especialidad {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String
+}
+
+model Cita {
+  id         Int      @id @default(autoincrement())
+  pacienteId Int
+  doctorId   Int
+  fecha      DateTime
+  estado     String
+
+  paciente Paciente @relation(fields: [pacienteId], references: [id])
+  doctor   Doctor   @relation(fields: [doctorId], references: [id])
+}
