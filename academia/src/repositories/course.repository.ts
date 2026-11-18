@@ -35,3 +35,14 @@ export async function remove(id: number) : Promise<boolean> {
         throw error;
     }
 }
+
+export function findWithOwner(id: number) {
+  return prisma.course.findUnique({
+    where: { id },
+    include: {
+      instructor: {
+        select: { userId: true }
+      }
+    }
+  });
+}
