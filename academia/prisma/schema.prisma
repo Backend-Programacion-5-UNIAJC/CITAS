@@ -7,28 +7,229 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Course {
-  id       Int    @id @default(autoincrement())
-  title    String
-  capacity Int
+// ENUMS DE ACADEMIA
+
+enum Role {
+
+  ADMIN
+
+  INSTRUCTOR
+
+  STUDENT
+
 }
 
+enum EnrollmentStatus {
+
+  CONFIRMED
+
+  CANCELLED
+
+}
+
+// ENUMS DE CITAS
+
+enum Role2 {
+
+  ADMIN
+
+  DOCTOR
+
+  PACIENTE
+
+}
+
+enum EstadoCita {
+
+  PROGRAMADA
+
+  CANCELADA
+
+  COMPLETADA
+
+}
+
+// USUARIOS DE ACADEMIA
+
+model User {
+
+  id         Int         @id @default(autoincrement())
+
+  name       String
+
+  email      String      @unique
+
+  password   String
+
+  role       Role        @default(STUDENT)
+
+  instructor Instructor?
+
+  student    Student?
+
+}
+
+// MODELOS DE ACADEMIA
+
+model Instructor {
+
+  id      Int      @id @default(autoincrement())
+
+  name    String
+
+  email   String   @unique
+
+  userId  Int?     @unique
+
+  user    User?    @relation(fields: [userId], references: [id])
+
+  courses Course[]
+
+}
+
+model Course {
+
+  id           Int          @id @default(autoincrement())
+
+  title        String
+
+  capacity     Int
+
+  instructorId Int?
+
+  instructor   Instructor?  @relation(fields: [instructorId], references: [id])
+
+  enrollments  Enrollment[]
+
+}
+
+model Student {
+
+  id          Int          @id @default(autoincrement())
+
+  name        String
+
+  email       String       @unique
+
+  userId      Int?         @unique
+
+  user        User?        @relation(fields: [userId], references: [id])
+
+  enrollments Enrollment[]
+
+}
+
+model Enrollment {
+
+  id         Int              @id @default(autoincrement())
+
+  studentId  Int
+
+  courseId   Int
+
+  status     EnrollmentStatus @default(CONFIRMED)
+
+  enrolledAt DateTime         @default(now())
+
+  student    Student          @relation(fields: [studentId], references: [id])
+
+  course     Course           @relation(fields: [courseId], references: [id])
+
+  @@unique([studentId, courseId])
+
+}
+
+// USUARIOS DE CITAS
+
+model UsuarioCita {
+
+  id       Int       @id @default(autoincrement())
+
+  name     String
+
+  email    String    @unique
+
+  password String
+
+  role     Role2     @default(PACIENTE)
+
+  doctor   Doctor?
+
+  paciente Paciente?
+
+}
+
+// MODELOS DE CITAS
+
 model Paciente {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
-  phone String
+
+  id        Int          @id @default(autoincrement())
+
+  name      String
+
+  email     String       @unique
+
+  phone     String
+
+  usuarioId Int?         @unique
+
+  usuario   UsuarioCita? @relation(fields: [usuarioId], references: [id])
+
+  citas     Cita[]
+
 }
 
 model Doctor {
-  id             Int    @id @default(autoincrement())
+
+  id             Int          @id @default(autoincrement())
+
   name           String
-  email String @unique
+
+  email          String       @unique
+
+  usuarioId      Int?         @unique
+
+  usuario        UsuarioCita? @relation(fields: [usuarioId], references: [id])
+
   especialidadId Int
+
+  especialidad   Especialidad @relation(fields: [especialidadId], references: [id])
+
+  citas          Cita[]
+
 }
 
 model Especialidad {
-  id          Int    @id @default(autoincrement())
+
+  id          Int      @id @default(autoincrement())
+
   name        String
+
   description String
+
+  doctores    Doctor[]
+
 }
+
+model Cita {
+
+  id         Int        @id @default(autoincrement())
+
+  pacienteId Int
+
+  doctorId   Int
+
+  fechaHora  DateTime
+
+  status     EstadoCita @default(PROGRAMADA)
+
+  createdAt  DateTime   @default(now())
+
+  paciente   Paciente   @relation(fields: [pacienteId], references: [id])
+
+  doctor     Doctor     @relation(fields: [doctorId], references: [id])
+
+  @@unique([doctorId, fechaHora])
+
+}
+ 
