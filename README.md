@@ -71,3 +71,30 @@ Dirección base: `http://localhost:3000`.
 
 - **Karen Caicedo:** colaboradora del repositorio y revisora de Pull Requests.
 - **Yoseph Orozco:** colaborador del repositorio y revisor de Pull Requests.
+
+## Permisos de cursos e instructores
+
+Las escrituras requieren un token JWT válido.
+“Solo dueño” significa que el curso pertenece al instructor autenticado.
+
+| Endpoint | Público | ADMIN | INSTRUCTOR | STUDENT |
+|---|---|---|---|---|
+| GET /courses | Permitido | Permitido | Permitido | Permitido |
+| GET /courses/:id | Permitido | Permitido | Permitido | Permitido |
+| POST /courses | Denegado | Permitido | Permitido* | Denegado |
+| PUT /courses/:id | Denegado | Permitido | Solo dueño | Denegado |
+| DELETE /courses/:id | Denegado | Permitido | Solo dueño | Denegado |
+| GET /instructors | Permitido | Permitido | Permitido | Permitido |
+| GET /instructors/:id | Permitido | Permitido | Permitido | Permitido |
+| POST /instructors | Denegado | Permitido | Denegado | Denegado |
+| PUT /instructors/:id | Denegado | Permitido | Denegado | Denegado |
+| DELETE /instructors/:id | Denegado | Permitido | Denegado | Denegado |
+
+*El instructor debe tener su cuenta vinculada a un perfil de instructor.
+
+Sin token válido, las rutas protegidas responden 401.
+Sin el rol o la propiedad requerida, responden 403.
+Si el usuario supera los filtros de autenticación y rol, pero el curso
+que intenta editar o eliminar no existe, responden 404.
+
+La adaptación de estos permisos al módulo de citas médicas está realizando, pendiente de subir los cambio .

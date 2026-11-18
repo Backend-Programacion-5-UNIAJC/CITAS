@@ -1,50 +1,72 @@
-import { courses } from "../data/courses";
-import type { Course } from "../data/courses";
 
-let nextId = Math.max(0, ...courses.map((course) => course.id)) + 1;
+import * as courseRepository from '../repositories/course.repository';
+import { AuthUser } from '../models/user.model';
+import { CourseInput } from '../models/course.model';
+import * as instructorRepository from '../repositories/instructor.repository';
 
-export function listCourses(): Course[] {
-  return courses;
+
+
+export async function listCourses() {
+  return courseRepository.findAll();
 }
 
-export function findCourseById(id: number): Course | undefined {
-  return courses.find((course) => course.id === id);
+export async function findCourseById(id: number) {
+  return courseRepository.findById(id);
 }
 
-export function createCourse(data: Omit<Course, "id">): Course {
-  const newCourse: Course = {
-    id: nextId++,
-    title: data.title,
-    capacity: data.capacity
-  };
+export async function createCourse(data: CourseInput, user: AuthUser) {
+  if (user.role === 'INSTRUCTOR') {
+    const instructor = await instructorRepository.findByUserId(user.id);
 
-  courses.push(newCourse);
-  return newCourse;
+    if (!instructor) {
+      throw new Error('FORBIDDEN');
+    }
+
+    data.instructorId = instructor.id;
+  }
+
+  return courseRepository.create(data);
 }
 
-export function updateCourse(
+export async function updateCourse(
   id: number,
-  data: Omit<Course, "id">
-): Course | undefined {
-  const course = findCourseById(id);
+  data: Partial<CourseInput>
+) {
+  return courseRepository.update(id, data);
+}
+
+export async function deleteCourse(id: number) {
+  return courseRepository.remove(id);
+}
+
+export async function updateCourseAsOwner(
+  id: number,
+  user: AuthUser,
+  data: Partial<CourseInput>
+) {
+  const course = await courseRepository.findWithOwner(id);
 
   if (!course) {
-    return undefined;
+    throw new Error('NOT_FOUND');
   }
 
-  course.title = data.title;
-  course.capacity = data.capacity;
+  if (user.role !== 'ADMIN' && course.instructor?.userId !== user.id) {
+    throw new Error('FORBIDDEN');
+  }
 
-  return course;
+  return courseRepository.update(id, data);
 }
 
-export function deleteCourse(id: number): boolean {
-  const index = courses.findIndex((course) => course.id === id);
+export async function deleteCourseAsOwner(id: number, user: AuthUser) {
+  const course = await courseRepository.findWithOwner(id);
 
-  if (index === -1) {
-    return false;
+  if (!course) {
+    throw new Error('NOT_FOUND');
   }
 
-  courses.splice(index, 1);
-  return true;
+  if (user.role !== 'ADMIN' && course.instructor?.userId !== user.id) {
+    throw new Error('FORBIDDEN');
+  }
+
+  return courseRepository.remove(id);
 }
