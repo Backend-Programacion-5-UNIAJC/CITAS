@@ -6,6 +6,7 @@ import pacienteRoutes from "./routes/paciente.routes";
 import doctorRoutes from "./routes/doctor.routes";
 import especialidadRoutes from "./routes/especialidad.routes";
 import authRoutes from "./routes/auth.routes";
+import { errorMiddleware, NotFoundMiddleware } from "./middleware/error.middleware";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,6 +23,9 @@ app.use("/instructors", instructorRoutes);
 app.use("/pacientes", pacienteRoutes);
 app.use("/doctores", doctorRoutes);
 app.use("/especialidades", especialidadRoutes);
+
+app.use(NotFoundMiddleware);
+app.use(errorMiddleware);
 
 app.get("/version", (_req, res) => {
   res.status(200).json({ version: "1.0.0" });
