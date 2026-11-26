@@ -9,9 +9,14 @@ export async function getAllCourses(req: Request, res: Response) {
 }
 
 export async function getCourseById(req: Request, res: Response) {
-  const course = await courseService.findCourseById(
-    Number(req.params.id)
-  );
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id <= 0) {
+    return res.status(400).json({
+      error: 'El id debe ser un número entero positivo'
+    });
+  }
+
+  const course = await courseService.findCourseById(id);
 
   if (!course) {
     return res.status(404).json({
